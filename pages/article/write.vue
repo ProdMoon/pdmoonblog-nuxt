@@ -3,6 +3,7 @@ import type { Article } from '~/types/article';
 
 const title = ref('');
 const content = ref('');
+const currentContentViewMode = ref<'html' | 'dom'>('dom');
 
 const handleSave = async () => {
     const contentEl = document.getElementById('content');
@@ -24,13 +25,32 @@ const handleSave = async () => {
         body: data,
     });
 
-    console.log(response);
     if (response.status.value === 'success') {
         alert('저장되었습니다.');
         title.value = '';
         content.value = '';
         contentEl.innerHTML = '';
     }
+};
+
+const handleDomToHtml = () => {
+    currentContentViewMode.value = 'html';
+    const contentEl = document.getElementById('content');
+    if (!contentEl) {
+        throw new Error('content element not found');
+    }
+    contentEl.innerText = contentEl.innerHTML;
+    contentEl.style.fontFamily = 'monospace';
+};
+
+const handleHtmlToDom = () => {
+    currentContentViewMode.value = 'dom';
+    const contentEl = document.getElementById('content');
+    if (!contentEl) {
+        throw new Error('content element not found');
+    }
+    contentEl.innerHTML = contentEl.innerText;
+    contentEl.style.fontFamily = 'inherit';
 };
 
 </script>
@@ -42,7 +62,11 @@ const handleSave = async () => {
     </div>
     <div id="content" contenteditable class="w-full min-h-72 border p-4">
     </div>
-    <div class="flex justify-end">
+    <div class="flex justify-between">
+        <div class="flex items-center">
+            <button v-if="currentContentViewMode === 'dom'" @click="handleDomToHtml">HTML 보기</button>
+            <button v-else @click="handleHtmlToDom">DOM 보기</button>
+        </div>
         <button @click="handleSave" class="px-5 py-2 rounded-md bg-blue-500 text-white">저장</button>
     </div>
 </template>
