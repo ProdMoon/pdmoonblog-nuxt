@@ -5,7 +5,7 @@ const route = useRoute();
 
 const getArticle: (id: number) => Promise<Article> = async (id) => {
   return await $fetch(`https://localhost:7233/api/article/${id}`);
-}
+};
 
 const updateArticle = async (article: Article) => {
   if (!article.id) {
@@ -19,7 +19,7 @@ const updateArticle = async (article: Article) => {
     body: article,
   });
   return res;
-}
+};
 
 if (Array.isArray(route.params.id)) {
   route.params.id = route.params.id[0];
