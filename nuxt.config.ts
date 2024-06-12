@@ -2,4 +2,13 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss'],
+  app: {
+    head: {
+      title: 'PDMoonBlog',
+      meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1' }],
+      htmlAttrs: {
+        lang: 'ko',
+      },
+    },
+  },
 });
