@@ -13,6 +13,8 @@ const currentContentViewMode = ref<'html' | 'dom'>('dom');
 onMounted(() => {
   const contentEl = getContentEl();
   contentEl.innerHTML = content.value;
+
+  document.getElementById('image-upload-input')?.addEventListener('change', handleImageUpload);
 });
 
 const getContentEl = () => {
@@ -53,6 +55,48 @@ const handleHtmlToDom = () => {
   contentEl.innerHTML = contentEl.innerText;
   contentEl.style.fontFamily = 'inherit';
 };
+
+const handleImageUploadClick = () => {
+  const file = document.getElementById('image-upload-input') as HTMLInputElement;
+  file.click();
+};
+
+const handleImageUpload = async () => {
+  const fileEl = document.getElementById('image-upload-input') as HTMLInputElement;
+  if (!fileEl.files) return;
+
+  const contentEl = getContentEl();
+
+  for (const file of fileEl.files) {
+    const { fileName, fileExtension } = getFileInformation(file);
+    const timestamp = new Date().getTime();
+    const key = `article/${fileName}_${timestamp}.${fileExtension}`;
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('key', key);
+    await fetch('https://localhost:7233/api/file/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    const awsS3Url = 'https://pdmoonblogbucket.s3.ap-northeast-2.amazonaws.com';
+    const imageUrl = `${awsS3Url}/${key}`;
+    const el = document.createElement('img');
+    el.src = imageUrl;
+    el.alt = file.name;
+    el.classList.add('w-full', 'h-auto');
+    contentEl.appendChild(el);
+  }
+  fileEl.value = '';
+  contentEl.focus();
+};
+
+const getFileInformation = (file: File) => {
+  const arr = file.name.split('.');
+  const fileName = arr.slice(0, -1).join('.');
+  const fileExtension = arr.pop();
+  return { fileName, fileExtension };
+};
 </script>
 
 <template>
@@ -69,6 +113,8 @@ const handleHtmlToDom = () => {
     <div class="flex items-center">
       <button v-if="currentContentViewMode === 'dom'" @click="handleDomToHtml">HTML 보기</button>
       <button v-else @click="handleHtmlToDom">DOM 보기</button>
+      <input id="image-upload-input" type="file" accept="image/*" class="hidden" />
+      <button @click="handleImageUploadClick">이미지 업로드</button>
     </div>
     <button @click="handleSave" class="px-5 py-2 rounded-md bg-blue-500 text-white">저장</button>
   </div>
