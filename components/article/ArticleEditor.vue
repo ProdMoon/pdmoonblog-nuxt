@@ -26,6 +26,14 @@ const getContentEl = () => {
 };
 
 const handleSave = async () => {
+  if (title.value.trim() === '') {
+    alert('제목이 입력되지 않았습니다.');
+    return;
+  }
+  if (content.value.trim() === '') {
+    alert('내용이 입력되지 않았습니다.');
+    return;
+  }
   content.value = getContentEl().innerHTML;
 
   const data: Article = {
