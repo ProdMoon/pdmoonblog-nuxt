@@ -111,11 +111,11 @@ const getFileInformation = (file: File) => {
   <div id="content" contenteditable class="w-full min-h-72 border p-4"></div>
   <div class="flex justify-between">
     <div class="flex items-center">
-      <button v-if="currentContentViewMode === 'dom'" @click="handleDomToHtml">HTML 보기</button>
-      <button v-else @click="handleHtmlToDom">DOM 보기</button>
+      <BasicButton v-if="currentContentViewMode === 'dom'" @click="handleDomToHtml">HTML 보기</BasicButton>
+      <BasicButton v-else @click="handleHtmlToDom">DOM 보기</BasicButton>
       <input id="image-upload-input" type="file" accept="image/*" class="hidden" />
-      <button @click="handleImageUploadClick">이미지 업로드</button>
+      <BasicButton @click="handleImageUploadClick">이미지 업로드</BasicButton>
     </div>
-    <button @click="handleSave" class="px-5 py-2 rounded-md bg-blue-500 text-white">저장</button>
+    <BasicButton @click="handleSave">저장</BasicButton>
   </div>
 </template>

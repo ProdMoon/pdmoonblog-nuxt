@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts'],
   app: {
     head: {
       title: 'PDMoonBlog',
@@ -9,6 +9,12 @@ export default defineNuxtConfig({
       htmlAttrs: {
         lang: 'ko',
       },
+    },
+  },
+  googleFonts: {
+    families: {
+      Ubuntu: true,
+      'Gowun Batang': true,
     },
   },
 });
