@@ -4,7 +4,7 @@ const props = defineProps<{
   class?: string;
 }>();
 
-const combinedClass = `px-5 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-400 ${props.class ?? ''}`;
+const combinedClass = `px-5 py-2 rounded-md bg-blue-500 text-white hover:bg-blue-400 inline-block ${props.class ?? ''}`;
 </script>
 <template>
   <NuxtLink v-if="props.href" :to="props.href" :class="combinedClass">
