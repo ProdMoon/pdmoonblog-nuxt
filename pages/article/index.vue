@@ -3,7 +3,7 @@ import type { Article } from '@/types/article';
 const articles = ref([] as Article[]);
 
 onMounted(async () => {
-  const res: Article[] = await $fetch('https://localhost:7233/api/article');
+  const res: Article[] = await $fetch('/api/article');
   articles.value = res;
 });
 </script>

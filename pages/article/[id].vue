@@ -6,7 +6,7 @@ const { status } = useAuth();
 const article = ref<Article | null>(null);
 
 onMounted(async () => {
-  const res: Article = await $fetch(`https://localhost:7233/api/article/${route.params.id}`);
+  const res: Article = await $fetch(`/api/article/${route.params.id}`);
   article.value = res;
 });
 
@@ -15,7 +15,7 @@ const handleEdit = async () => {
 };
 
 const handleDelete = async () => {
-  const response = await useFetch(`https://localhost:7233/api/article/${route.params.id}`, {
+  const response = await useFetch(`/api/article/${route.params.id}`, {
     method: 'DELETE',
   });
 

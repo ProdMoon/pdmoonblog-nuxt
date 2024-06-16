@@ -6,14 +6,14 @@ definePageMeta({ middleware: 'auth' });
 const route = useRoute();
 
 const getArticle: (id: number) => Promise<Article> = async (id) => {
-  return await $fetch(`https://localhost:7233/api/article/${id}`);
+  return await $fetch(`/api/article/${id}`);
 };
 
 const updateArticle = async (article: Article) => {
   if (!article.id) {
     throw new Error('article id is required');
   }
-  const res = await useFetch(`https://localhost:7233/api/article/${article.id}`, {
+  const res = await useFetch(`/api/article/${article.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',

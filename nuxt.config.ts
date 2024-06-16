@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   auth: {
-    baseURL: 'https://pdmoonblog.com/api/auth',
+    baseURL: '/api/auth',
     provider: {
       type: 'refresh',
       endpoints: {

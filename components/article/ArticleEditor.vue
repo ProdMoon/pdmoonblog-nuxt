@@ -82,7 +82,7 @@ const handleImageUpload = async () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('key', key);
-    await fetch('https://localhost:7233/api/file/upload', {
+    await fetch('/api/file/upload', {
       method: 'POST',
       body: formData,
     });

@@ -4,7 +4,7 @@ import type { Article } from '~/types/article';
 definePageMeta({ middleware: 'auth' });
 
 const saveRequestFunction = async (data: Article) => {
-  const res = await useFetch('https://localhost:7233/api/article', {
+  const res = await useFetch('/api/article', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
