@@ -1,7 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@sidebase/nuxt-auth'],
   app: {
     head: {
       title: 'PDMoonBlog',
@@ -15,6 +15,24 @@ export default defineNuxtConfig({
     families: {
       Ubuntu: true,
       'Gowun Batang': true,
+    },
+  },
+  auth: {
+    baseURL: 'https://pdmoonblog.com/api/auth',
+    provider: {
+      type: 'refresh',
+      endpoints: {
+        signIn: { path: '/login', method: 'post' },
+        signOut: { path: '/logout', method: 'post' },
+        refresh: { path: '/refresh', method: 'post' },
+        signUp: { path: '/register', method: 'post' },
+        getSession: { path: '/getSession', method: 'get' },
+      },
+      token: { signInResponseTokenPointer: '/accessToken' },
+      refreshToken: { signInResponseRefreshTokenPointer: '/refreshToken' },
+      pages: {
+        login: '/account/signin',
+      },
     },
   },
 });

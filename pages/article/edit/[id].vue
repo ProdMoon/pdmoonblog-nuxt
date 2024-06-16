@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Article } from '~/types/article';
 
+definePageMeta({ middleware: 'auth' });
+
 const route = useRoute();
 
 const getArticle: (id: number) => Promise<Article> = async (id) => {
