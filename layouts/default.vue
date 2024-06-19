@@ -13,15 +13,17 @@ const signOutFunction = async () => {
 </script>
 
 <template>
-  <div class="max-w-7xl">
-    <div class="w-full flex items-center justify-between">
-      <NuxtLink to="/" class="text-3xl font-ubuntu">ProdMoon Blog</NuxtLink>
-      <div class="flex items-center space-x-3">
-        <SentiButton href="/article/write">글쓰기</SentiButton>
-        <SentiButton href="/article">글</SentiButton>
-        <SentiButton v-if="status === 'authenticated'" @click="signOutFunction">로그아웃</SentiButton>
+  <main class="flex justify-center">
+    <div class="w-full max-w-7xl">
+      <div class="flex items-center justify-between">
+        <NuxtLink to="/" class="text-2xl md:text-3xl pl-2 font-ubuntu">PDMoon Blog</NuxtLink>
+        <div class="flex items-center space-x-3">
+          <SentiButton href="/article/write">글쓰기</SentiButton>
+          <SentiButton href="/article">글</SentiButton>
+          <SentiButton v-if="status === 'authenticated'" @click="signOutFunction">로그아웃</SentiButton>
+        </div>
       </div>
+      <slot></slot>
     </div>
-    <slot></slot>
-  </div>
+  </main>
 </template>
