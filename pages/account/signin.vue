@@ -16,15 +16,11 @@ const signInWithCredentials = async () => {
   };
   try {
     const data = await signIn(credentials, { callbackUrl: route.query.returnurl as string ?? '/' });
-
-    console.log(data);
-    alert('dfdf');
-    // if (data.status === 'success') {
-    //   setToken(data.token);
-    //   navigateTo(route.query.returnurl as string ?? '/');
-    // }
+    alert('환영합니다!');
+    // TODO: Save token to some storage
   } catch (error) {
     console.error(error);
+    alert('아이디나 비밀번호가 맞지 않습니다.');
   }
 };
 </script>
