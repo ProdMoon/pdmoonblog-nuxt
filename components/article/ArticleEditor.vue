@@ -30,11 +30,12 @@ const handleSave = async () => {
     alert('제목이 입력되지 않았습니다.');
     return;
   }
+
+  content.value = getContentEl().innerHTML;
   if (content.value.trim() === '') {
     alert('내용이 입력되지 않았습니다.');
     return;
   }
-  content.value = getContentEl().innerHTML;
 
   const data: Article = {
     id: props.article?.id,
