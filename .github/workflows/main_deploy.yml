@@ -1,0 +1,55 @@
+name: Deploy Nuxt 3 App to AWS EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npm run build
+
+    - name: Copy files via SSH
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.AWS_SSH_HOST }}
+        username: ${{ secrets.AWS_SSH_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        source: ./.output/
+        target: /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+
+    - name: Copy ecosystem.config.cjs via SSH
+      uses: appleboy/scp-action@v0.1.3
+      with:
+        host: ${{ secrets.AWS_SSH_HOST }}
+        username: ${{ secrets.AWS_SSH_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        source: ./ecosystem.config.cjs
+        target: /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.AWS_SSH_HOST }}
+        username: ${{ secrets.AWS_SSH_USERNAME }}
+        key: ${{ secrets.AWS_SSH_KEY }}
+        script: |
+          cd /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+          pm2 stop ecosystem.config.cjs || true
+          pm2 delete ecosystem.config.cjs || true
+          pm2 start ecosystem.config.cjs
