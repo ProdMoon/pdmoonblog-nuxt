@@ -2,10 +2,7 @@
 import type { Article } from '@/types/article';
 const articles = ref([] as Article[]);
 
-onMounted(async () => {
-  const res: Article[] = await $fetch('/api/article');
-  articles.value = res;
-});
+articles.value = await apiFetch('/api/article');
 </script>
 
 <template>
