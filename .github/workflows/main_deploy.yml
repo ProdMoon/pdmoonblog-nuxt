@@ -1,4 +1,4 @@
-name: Deploy Nuxt 3 App to AWS EC2
+name: Deploy Nuxt 3 App to Raspberry Pi
 
 on:
   push:
@@ -24,32 +24,43 @@ jobs:
     - name: Build
       run: npm run build
 
+    - name: Clean remote directory
+      uses: appleboy/ssh-action@v0.1.5
+      with:
+        host: ${{ secrets.RASPI_SSH_HOST }}
+        username: ${{ secrets.RASPI_SSH_USERNAME }}
+        key: ${{ secrets.RASPI_SSH_KEY }}
+        script: |
+          if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app" ]; then
+            rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app
+          fi
+
     - name: Copy files via SSH
       uses: appleboy/scp-action@v0.1.3
       with:
-        host: ${{ secrets.AWS_SSH_HOST }}
-        username: ${{ secrets.AWS_SSH_USERNAME }}
-        key: ${{ secrets.AWS_SSH_KEY }}
+        host: ${{ secrets.RASPI_SSH_HOST }}
+        username: ${{ secrets.RASPI_SSH_USERNAME }}
+        key: ${{ secrets.RASPI_SSH_KEY }}
         source: ./.output/
-        target: /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
 
     - name: Copy ecosystem.config.cjs via SSH
       uses: appleboy/scp-action@v0.1.3
       with:
-        host: ${{ secrets.AWS_SSH_HOST }}
-        username: ${{ secrets.AWS_SSH_USERNAME }}
-        key: ${{ secrets.AWS_SSH_KEY }}
+        host: ${{ secrets.RASPI_SSH_HOST }}
+        username: ${{ secrets.RASPI_SSH_USERNAME }}
+        key: ${{ secrets.RASPI_SSH_KEY }}
         source: ./ecosystem.config.cjs
-        target: /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
 
     - name: Deploy to server
       uses: appleboy/ssh-action@v0.1.5
       with:
-        host: ${{ secrets.AWS_SSH_HOST }}
-        username: ${{ secrets.AWS_SSH_USERNAME }}
-        key: ${{ secrets.AWS_SSH_KEY }}
+        host: ${{ secrets.RASPI_SSH_HOST }}
+        username: ${{ secrets.RASPI_SSH_USERNAME }}
+        key: ${{ secrets.RASPI_SSH_KEY }}
         script: |
-          cd /home/${{ secrets.AWS_SSH_USERNAME }}/nuxt-app/
+          cd /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
           pm2 stop ecosystem.config.cjs || true
           pm2 delete ecosystem.config.cjs || true
           pm2 start ecosystem.config.cjs
