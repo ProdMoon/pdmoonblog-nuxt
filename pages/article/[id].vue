@@ -5,24 +5,19 @@ const route = useRoute();
 const { status } = useAuth();
 const article = ref<Article | null>(null);
 
-onMounted(async () => {
-  const res: Article = await $fetch(`/api/article/${route.params.id}`);
-  article.value = res;
-});
+const { data } = await useApiFetch<Article>(`/api/article/${route.params.id}`);
+article.value = data.value;
 
 const handleEdit = async () => {
   navigateTo(`/article/edit/${route.params.id}`);
 };
 
 const handleDelete = async () => {
-  const response = await useFetch(`/api/article/${route.params.id}`, {
+  const response = await apiFetch(`/api/article/${route.params.id}`, {
     method: 'DELETE',
   });
-
-  if (response.status.value === 'success') {
-    alert('삭제되었습니다.');
-    navigateTo('/article');
-  }
+  alert('삭제되었습니다.');
+  navigateTo('/article');
 };
 </script>
 

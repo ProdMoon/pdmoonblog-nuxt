@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     },
   },
   auth: {
-    baseURL: '/api/auth',
+    baseURL: 'https://api.pdmoonblog.com/api/auth',
     provider: {
       type: 'refresh',
       endpoints: {
@@ -32,6 +32,21 @@ export default defineNuxtConfig({
       refreshToken: { signInResponseRefreshTokenPointer: '/refreshToken' },
       pages: {
         login: '/account/signin',
+      },
+    },
+  },
+  runtimeConfig: {
+    public: {
+      apiURL: 'https://api.pdmoonblog.com',
+    }
+  },
+  $development: {
+    auth: {
+      baseURL: 'https://localhost:7233/api/auth',
+    },
+    runtimeConfig: {
+      public: {
+        apiURL: 'https://localhost:7233',
       },
     },
   },

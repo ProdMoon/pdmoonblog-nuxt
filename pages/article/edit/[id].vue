@@ -5,15 +5,17 @@ definePageMeta({ middleware: 'auth' });
 
 const route = useRoute();
 
-const getArticle: (id: number) => Promise<Article> = async (id) => {
-  return await $fetch(`/api/article/${id}`);
-};
+if (Array.isArray(route.params.id)) {
+  route.params.id = route.params.id[0];
+}
+const { data } = await useApiFetch(`/api/article/${parseInt(route.params.id)}`);
+const article = data.value;
 
 const updateArticle = async (article: Article) => {
   if (!article.id) {
     throw new Error('article id is required');
   }
-  const res = await useFetch(`/api/article/${article.id}`, {
+  const res = await apiFetch(`/api/article/${article.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -22,11 +24,6 @@ const updateArticle = async (article: Article) => {
   });
   return res;
 };
-
-if (Array.isArray(route.params.id)) {
-  route.params.id = route.params.id[0];
-}
-const article = await getArticle(parseInt(route.params.id));
 </script>
 
 <template>

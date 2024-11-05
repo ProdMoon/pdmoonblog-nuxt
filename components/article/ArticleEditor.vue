@@ -9,6 +9,7 @@ const props = defineProps<{
 const title = ref(props.article?.title ?? '');
 const content = ref(props.article?.content ?? '');
 const currentContentViewMode = ref<'html' | 'dom'>('dom');
+const apiURL = useRuntimeConfig().public.apiURL;
 
 onMounted(() => {
   const contentEl = getContentEl();
@@ -44,11 +45,8 @@ const handleSave = async () => {
   };
 
   const response = await props.saveRequestFunction(data);
-
-  if (response.status.value === 'success') {
-    alert('저장되었습니다.');
-    navigateTo('/article');
-  }
+  alert('저장되었습니다.');
+  navigateTo('/article');
 };
 
 const handleDomToHtml = () => {
@@ -79,17 +77,16 @@ const handleImageUpload = async () => {
   for (const file of fileEl.files) {
     const { fileName, fileExtension } = getFileInformation(file);
     const timestamp = new Date().getTime();
-    const key = `article/${fileName}_${timestamp}.${fileExtension}`;
+    const key = `${fileName}_${timestamp}.${fileExtension}`;
     const formData = new FormData();
     formData.append('file', file);
     formData.append('key', key);
-    await fetch('/api/file/upload', {
+    await apiFetch('/api/file/upload', {
       method: 'POST',
       body: formData,
     });
 
-    const awsS3Url = 'https://pdmoonblogbucket.s3.ap-northeast-2.amazonaws.com';
-    const imageUrl = `${awsS3Url}/${key}`;
+    const imageUrl = apiURL + '/api/file/download/' + key;
     const el = document.createElement('img');
     el.src = imageUrl;
     el.alt = file.name;
