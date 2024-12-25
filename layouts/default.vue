@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import SentiButton from '~/components/senti/SentiButton.vue';
-
 const { status, signOut } = useAuth();
 
 const signOutFunction = async () => {
