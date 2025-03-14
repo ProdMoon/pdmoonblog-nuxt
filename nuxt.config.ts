@@ -38,7 +38,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiURL: 'https://api.pdmoonblog.com',
-    }
+    },
   },
   $development: {
     auth: {
