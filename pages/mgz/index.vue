@@ -16,12 +16,11 @@ const isAutoScroll = ref(true);
 
 onMounted(() => {
   chatBox.value = document.getElementById('chatbox');
+  window.addEventListener('beforeunload', handleClose);
 });
 
 onUnmounted(() => {
-  if (socket.value?.readyState === WebSocket.OPEN) {
-    socket.value.close();
-  }
+  window.removeEventListener('beforeunload', handleClose);
 });
 
 watch(
@@ -49,6 +48,16 @@ function handleConnect() {
       message: '접속 성공!',
       timestamp: dayjs().valueOf(),
     });
+    // 입장 메시지
+    socket.value?.send(
+      JSON.stringify({
+        type: 'greeting',
+        message: '',
+        timestamp: dayjs().valueOf(),
+        senderId: myId,
+        senderName: myName.value,
+      })
+    );
   };
   socket.value.onclose = (e) => {
     connectionStatus.value = 'disconnected';
@@ -60,13 +69,27 @@ function handleConnect() {
   };
   socket.value.onmessage = (e) => {
     const data = JSON.parse(e.data);
-    messages.value.push({
-      type: 'message',
-      message: data.message,
-      timestamp: data.timestamp,
-      senderId: data.senderId,
-      senderName: data.senderName,
-    });
+    if (data.type === 'message') {
+      messages.value.push({
+        type: 'message',
+        message: data.message,
+        timestamp: data.timestamp,
+        senderId: data.senderId,
+        senderName: data.senderName,
+      });
+    } else if (data.type === 'greeting') {
+      messages.value.push({
+        type: 'log',
+        message: `${data.senderName}님이 입장했습니다.`,
+        timestamp: data.timestamp,
+      });
+    } else if (data.type === 'goodbye') {
+      messages.value.push({
+        type: 'log',
+        message: `${data.senderName}님이 퇴장했습니다.`,
+        timestamp: data.timestamp,
+      });
+    }
   };
   socket.value.onerror = () => {
     messages.value.push({
@@ -79,6 +102,15 @@ function handleConnect() {
 
 function handleClose() {
   if (socket.value?.readyState === WebSocket.OPEN) {
+    socket.value?.send(
+      JSON.stringify({
+        type: 'goodbye',
+        message: '',
+        timestamp: dayjs().valueOf(),
+        senderId: myId,
+        senderName: myName.value,
+      })
+    );
     socket.value.close();
   }
 }
@@ -118,11 +150,16 @@ function autoScrollDown() {
 
 <template>
   <div class="space-y-4 p-4">
-    <div class="flex items-center justify-between">
-      <div class="flex space-x-4">
-        <input v-model="myName" class="w-40 rounded-md border px-2.5 py-1" placeholder="이름" />
-        <BasicButton @click="handleConnect">접속</BasicButton>
-        <BasicButton @click="handleClose">종료</BasicButton>
+    <div class="space-y-2.5 md:flex md:items-center md:justify-between md:space-y-0">
+      <div class="flex space-x-2 md:space-x-4">
+        <input
+          v-model="myName"
+          class="w-40 rounded-md border px-2.5 py-1"
+          placeholder="이름"
+          :disabled="connectionStatus === 'connected'"
+        />
+        <BasicButton @click="handleConnect" :disabled="connectionStatus === 'connected'">접속</BasicButton>
+        <BasicButton @click="handleClose" :disabled="connectionStatus === 'disconnected'">종료</BasicButton>
       </div>
       <div class="flex space-x-4">
         <label class="flex items-center space-x-2">

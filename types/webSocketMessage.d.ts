@@ -1,5 +1,5 @@
 export interface WebSocketMessage {
-  type: 'message' | 'log';
+  type: 'message' | 'log' | 'greeting' | 'goodbye';
   message: string;
   timestamp: number;
   senderId?: string;
