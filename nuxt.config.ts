@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss', '@nuxtjs/google-fonts', '@sidebase/nuxt-auth'],
+
   app: {
     head: {
       title: 'PDMoonBlog',
@@ -11,12 +12,14 @@ export default defineNuxtConfig({
       },
     },
   },
+
   googleFonts: {
     families: {
       Ubuntu: true,
       'Gowun Batang': true,
     },
   },
+
   auth: {
     baseURL: 'https://api.pdmoonblog.com/api/auth',
     provider: {
@@ -35,11 +38,13 @@ export default defineNuxtConfig({
       },
     },
   },
+
   runtimeConfig: {
     public: {
       apiURL: 'https://api.pdmoonblog.com',
     },
   },
+
   $development: {
     auth: {
       baseURL: 'https://localhost:7233/api/auth',
@@ -50,4 +55,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  compatibilityDate: '2025-03-14',
 });
