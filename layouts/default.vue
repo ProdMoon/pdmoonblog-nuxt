@@ -28,7 +28,6 @@ const handleHiddenLogin = () => {
         <NuxtLink to="/" class="pl-2 font-ubuntu text-2xl md:text-3xl">pdmoonblog</NuxtLink>
         <div class="flex items-center space-x-3">
           <div v-if="status !== 'authenticated'" id="hidden-login" class="h-10 w-10" @click="handleHiddenLogin"></div>
-          <SentiButton href="/article">글</SentiButton>
           <SentiButton v-if="status === 'authenticated'" class="text-xs" href="/article/write">글쓰기</SentiButton>
           <SentiButton v-if="status === 'authenticated'" class="text-xs" @click="signOutFunction">로그아웃</SentiButton>
         </div>
