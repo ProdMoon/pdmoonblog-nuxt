@@ -29,10 +29,11 @@ jobs:
       with:
         host: ${{ secrets.RASPI_SSH_HOST }}
         username: ${{ secrets.RASPI_SSH_USERNAME }}
-        key: ${{ secrets.RASPI_SSH_KEY }}
+        password: ${{ secrets.RASPI_SSH_PASSWORD }}
+        port: 22
         script: |
-          if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app" ]; then
-            rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app
+          if [ -d "/home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/nuxt-app" ]; then
+            rm -rf /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/nuxt-app
           fi
 
     - name: Copy files via SSH
@@ -40,27 +41,30 @@ jobs:
       with:
         host: ${{ secrets.RASPI_SSH_HOST }}
         username: ${{ secrets.RASPI_SSH_USERNAME }}
-        key: ${{ secrets.RASPI_SSH_KEY }}
+        password: ${{ secrets.RASPI_SSH_PASSWORD }}
+        port: 22
         source: ./.output/
-        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
+        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/nuxt-app/
 
     - name: Copy ecosystem.config.cjs via SSH
       uses: appleboy/scp-action@v1
       with:
         host: ${{ secrets.RASPI_SSH_HOST }}
         username: ${{ secrets.RASPI_SSH_USERNAME }}
-        key: ${{ secrets.RASPI_SSH_KEY }}
+        password: ${{ secrets.RASPI_SSH_PASSWORD }}
+        port: 22
         source: ./ecosystem.config.cjs
-        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
+        target: /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/nuxt-app/
 
     - name: Deploy to server
       uses: appleboy/ssh-action@v1
       with:
         host: ${{ secrets.RASPI_SSH_HOST }}
         username: ${{ secrets.RASPI_SSH_USERNAME }}
-        key: ${{ secrets.RASPI_SSH_KEY }}
+        password: ${{ secrets.RASPI_SSH_PASSWORD }}
+        port: 22
         script: |
-          cd /home/${{ secrets.RASPI_SSH_USERNAME }}/pdmoonblog/nuxt-app/
+          cd /home/${{ secrets.RASPI_SSH_USERNAME }}/source/pdmoonblog/nuxt-app/
           pm2 stop ecosystem.config.cjs || true
           pm2 delete ecosystem.config.cjs || true
           pm2 start ecosystem.config.cjs
