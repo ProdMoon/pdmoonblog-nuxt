@@ -5,7 +5,7 @@ const route = useRoute();
 const { status } = useAuth();
 const article = ref<Article | null>(null);
 
-const { data } = await useApiFetch<Article>(`/api/article/${route.params.id}`);
+const { data } = await useFetch<Article>(`/api/article/${route.params.id}`);
 article.value = data.value;
 
 const handleEdit = async () => {
@@ -13,7 +13,7 @@ const handleEdit = async () => {
 };
 
 const handleDelete = async () => {
-  const response = await apiFetch(`/api/article/${route.params.id}`, {
+  await $fetch(`/api/article/${route.params.id}`, {
     method: 'DELETE',
   });
   alert('삭제되었습니다.');

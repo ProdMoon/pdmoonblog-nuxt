@@ -2,7 +2,8 @@
 import type { Article } from '@/types/article';
 const articles = ref([] as Article[]);
 
-articles.value = await apiFetch('/api/article');
+const res = await useFetch<Article[]>(`/api/article`);
+articles.value = res.data.value ?? [];
 </script>
 
 <template>

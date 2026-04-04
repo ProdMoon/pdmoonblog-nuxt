@@ -2,8 +2,8 @@
 import type { Article } from '~/types/article';
 
 const props = defineProps<{
-  article?: Article;
-  saveRequestFunction: (data: Article) => Promise<AsyncData<unknown, Error>>;
+  article?: Article | null;
+  saveRequestFunction: (data: Article) => Promise<void>;
 }>();
 
 const title = ref(props.article?.title ?? '');
@@ -39,12 +39,12 @@ const handleSave = async () => {
   }
 
   const data: Article = {
-    id: props.article?.id,
+    ...props.article,
     title: title.value,
     content: content.value,
   };
 
-  const response = await props.saveRequestFunction(data);
+  await props.saveRequestFunction(data);
   alert('저장되었습니다.');
   navigateTo('/article');
 };
@@ -81,7 +81,7 @@ const handleImageUpload = async () => {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('key', key);
-    await apiFetch('/api/file/upload', {
+    await $fetch('/api/file/upload', {
       method: 'POST',
       body: formData,
     });

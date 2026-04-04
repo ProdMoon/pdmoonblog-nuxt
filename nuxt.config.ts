@@ -13,6 +13,8 @@ export default defineNuxtConfig({
     },
   },
 
+  pages: true,
+
   googleFonts: {
     families: {
       Ubuntu: true,
