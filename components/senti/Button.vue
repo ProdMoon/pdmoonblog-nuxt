@@ -8,13 +8,15 @@ const props = defineProps<{
 const combinedClass = `px-5 py-2 border-gray-700 border-b-4 border-double font-batang font-bold ${props.class ?? ''}`;
 </script>
 <style scoped>
-a, button {
+a,
+button {
   position: relative;
   display: inline-block;
   overflow: hidden;
 }
 
-a::before, button::before {
+a::before,
+button::before {
   content: '';
   position: absolute;
   top: 0;
@@ -25,11 +27,13 @@ a::before, button::before {
   transition: left 0.6s;
 }
 
-a:hover::before, button:hover::before {
+a:hover::before,
+button:hover::before {
   left: 0;
 }
 
-a span, button span {
+a span,
+button span {
   position: relative;
   z-index: 1;
 }

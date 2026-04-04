@@ -7,7 +7,7 @@ const email = ref('');
 const password = ref('');
 
 if (status.value === 'authenticated') {
-  navigateTo(route.query.returnurl as string ?? '/');
+  navigateTo((route.query.returnurl as string) ?? '/');
 }
 const signInWithCredentials = async () => {
   const credentials = {
@@ -15,7 +15,7 @@ const signInWithCredentials = async () => {
     password: password.value,
   };
   try {
-    const data = await signIn(credentials, { callbackUrl: route.query.returnurl as string ?? '/' });
+    const data = await signIn(credentials, { callbackUrl: (route.query.returnurl as string) ?? '/' });
     alert('환영합니다!');
     // TODO: Save token to some storage
   } catch (error) {
@@ -26,13 +26,13 @@ const signInWithCredentials = async () => {
 </script>
 
 <template>
-  <div class="w-full mt-36 flex justify-center items-center">
+  <div class="mt-36 flex w-full items-center justify-center">
     <div class="w-96">
       <form @submit.prevent="signInWithCredentials">
-        <div class="w-full flex flex-col space-y-4">
-          <input v-model="email" type="email" placeholder="이메일" class="border rounded-md px-3 py-2" />
-          <input v-model="password" type="password" placeholder="비밀번호" class="border rounded-md px-3 py-2" />
-          <BasicButton type="submit" class="w-full mt-2">로그인</BasicButton>
+        <div class="flex w-full flex-col space-y-4">
+          <input v-model="email" type="email" placeholder="이메일" class="rounded-md border px-3 py-2" />
+          <input v-model="password" type="password" placeholder="비밀번호" class="rounded-md border px-3 py-2" />
+          <BasicButton type="submit" class="mt-2 w-full">로그인</BasicButton>
         </div>
       </form>
       <div class="mt-4 text-center">

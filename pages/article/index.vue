@@ -10,7 +10,7 @@ articles.value = res.data.value ?? [];
   <div class="space-y-2">
     <div v-for="article in articles" :key="article.id">
       <NuxtLink :to="`/article/${article.id}`">
-        <div class="border p-2 flex items-center hover:bg-blue-100">
+        <div class="flex items-center border p-2 hover:bg-blue-100">
           <div class="mr-3 text-gray-500">{{ article.id }}</div>
           <div>{{ article.title }}</div>
         </div>

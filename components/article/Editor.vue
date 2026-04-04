@@ -110,11 +110,11 @@ const getFileInformation = (file: File) => {
     <input
       v-model="title"
       type="text"
-      class="w-full p-2 border border-gray-300 rounded-md"
+      class="w-full rounded-md border border-gray-300 p-2"
       placeholder="제목을 입력하세요"
     />
   </div>
-  <div id="content" contenteditable class="w-full min-h-72 border p-4"></div>
+  <div id="content" contenteditable class="min-h-72 w-full border p-4"></div>
   <div class="flex justify-between">
     <div class="flex items-center">
       <BasicButton v-if="currentContentViewMode === 'dom'" @click="handleDomToHtml">HTML 보기</BasicButton>

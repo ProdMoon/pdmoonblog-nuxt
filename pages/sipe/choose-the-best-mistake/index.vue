@@ -1,21 +1,24 @@
 <template>
-  <div class="min-h-screen bg-gray-50 flex flex-col items-center p-4">
+  <div class="flex min-h-screen flex-col items-center bg-gray-50 p-4">
     <!-- Header -->
-    <section class="max-w-md w-full mb-6 text-center">
-      <h1 class="text-2xl font-bold mb-2">최고의 똥쟁이를 찾아라!</h1>
+    <section class="mb-6 w-full max-w-md text-center">
+      <h1 class="mb-2 text-2xl font-bold">최고의 똥쟁이를 찾아라!</h1>
       <p class="text-base text-gray-700">
-        SIPE 4기 멤버들이 들려주는 아찔한 실수 경험담!
-        어떤 실수가 베스트인지, 최고의 똥쟁이(!)에게 투표해주세요!
+        SIPE 4기 멤버들이 들려주는 아찔한 실수 경험담! 어떤 실수가 베스트인지, 최고의 똥쟁이(!)에게 투표해주세요!
       </p>
     </section>
 
     <!-- Story Cards -->
-    <section class="max-w-md w-full space-y-4">
-      <div v-for="story in stories" :key="story.id" class="bg-white rounded-lg shadow p-4">
-        <h2 class="text-lg font-semibold mb-2">{{ story.title }}</h2>
-        <p class="text-sm text-gray-600 mb-4">{{ story.content }}</p>
-        <a href="https://app.sli.do/event/izF1vnfFjfjjMdkfVTLAQX" target="_blank" rel="noopener noreferrer"
-          class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded text-center block transition transform duration-75 active:scale-95 active:bg-blue-700">
+    <section class="w-full max-w-md space-y-4">
+      <div v-for="story in stories" :key="story.id" class="rounded-lg bg-white p-4 shadow">
+        <h2 class="mb-2 text-lg font-semibold">{{ story.title }}</h2>
+        <p class="mb-4 text-sm text-gray-600">{{ story.content }}</p>
+        <a
+          href="https://app.sli.do/event/izF1vnfFjfjjMdkfVTLAQX"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block w-full transform rounded bg-blue-500 py-2 text-center text-white transition duration-75 hover:bg-blue-600 active:scale-95 active:bg-blue-700"
+        >
           투표하기
         </a>
       </div>
@@ -24,17 +27,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from 'vue';
 
 interface Story {
-  id: string
-  title: string
-  content: string
+  id: string;
+  title: string;
+  content: string;
 }
 
 definePageMeta({
   layout: false,
-})
+});
 
 // 동아리 운영진용 가상 스토리 데이터
 const stories = ref<Story[]>([
@@ -68,5 +71,5 @@ const stories = ref<Story[]>([
     content:
       '버그 하나 고친다는 게 배포 후 에러가 줄줄이 발생... Sentry 슬랙 연동 덕분에 알림이 1초마다 하나씩... “누가 배포했어?”라는 말에 제 손이 먼저 올라갔습니다.',
   },
-])
+]);
 </script>

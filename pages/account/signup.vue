@@ -18,7 +18,7 @@ const signUpWithCredentials = async () => {
 </script> -->
 
 <template>
-  <div class="w-full mt-36 flex justify-center items-center">
+  <div class="mt-36 flex w-full items-center justify-center">
     <!-- <form @submit.prevent="signUpWithCredentials">
       <div class="w-96 flex flex-col space-y-4">
         <input v-model="email" type="email" placeholder="이메일" class="border rounded-md px-3 py-2" />
